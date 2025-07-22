@@ -29,3 +29,9 @@ resource "google_project_service" "cloudrun_api" {
   service            = "run.googleapis.com"
   disable_on_destroy = false
 }
+
+# Enable the Identity-Aware Proxy API
+resource "google_project_service" "iap_api" {
+  service            = "iap.googleapis.com"
+  disable_on_destroy = false
+}

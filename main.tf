@@ -45,8 +45,10 @@ module "artifact_registry" {
 
 # Configure Cloud Run IAM
 module "cloud_run" {
-  source        = "./modules/cloud_run"
-  region        = var.region
+  source              = "./modules/cloud_run"
+  region              = var.region
+  iap_client_id       = var.iap_client_id
+  iap_client_secret   = var.iap_client_secret
 
   depends_on = [module.project_services]
 }

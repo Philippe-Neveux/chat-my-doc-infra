@@ -33,3 +33,14 @@ variable "github_token" {
   type        = string
   sensitive   = true
 }
+
+variable "iap_client_id" {
+  description = "Client ID of the IAP"
+  type        = string
+}
+
+variable "iap_client_secret" {
+  description = "Secret for connecting to the IAP"
+  type        = string
+  sensitive   = true
+}
