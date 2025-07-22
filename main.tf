@@ -1,0 +1,52 @@
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "6.43.0"
+    }
+    github = {
+      source = "integrations/github"
+      version = "6.6.0"
+    }
+  }
+  required_version = ">= 1.0"
+}
+
+# Enable all necessary project APIs
+module "project_services" {
+  source     = "./modules/project_services"
+}
+
+# Create the service accounts and their keys
+module "iam" {
+  source                  = "./modules/iam"
+  project_id              = var.project_id
+  github_token            = var.github_token
+
+  # Ensure APIs are enabled before creating IAM resources
+  depends_on = [module.project_services]
+}
+
+# # Create the VM and its static IP address
+# module "storage" {
+#   source                = "./modules/storage"
+#   location              = var.location
+#   # Ensure APIs are enabled before creating compute resources
+#   depends_on = [module.project_services]
+# }
+
+# Create the Artifact Registry repositories
+module "artifact_registry" {
+  source     = "./modules/artifact_registry"
+  location   = var.location
+
+  depends_on = [module.project_services]
+}
+
+# Configure Cloud Run IAM
+module "cloud_run" {
+  source        = "./modules/cloud_run"
+  region        = var.region
+
+  depends_on = [module.project_services]
+}
