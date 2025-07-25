@@ -6,12 +6,6 @@ resource "google_project_service" "cloudresourcemanager_api" {
   disable_on_destroy = false
 }
 
-# Enable the Compute Engine API
-resource "google_project_service" "compute_api" {
-  service            = "compute.googleapis.com"
-  disable_on_destroy = false
-}
-
 # Enable the IAM API to allow managing service accounts
 resource "google_project_service" "iam_api" {
   service            = "iam.googleapis.com"
@@ -30,8 +24,9 @@ resource "google_project_service" "cloudrun_api" {
   disable_on_destroy = false
 }
 
-# Enable the Identity-Aware Proxy API
-resource "google_project_service" "iap_api" {
-  service            = "iap.googleapis.com"
+
+# Enable the Cloud Storage API
+resource "google_project_service" "storage_api" {
+  service            = "storage.googleapis.com"
   disable_on_destroy = false
 }

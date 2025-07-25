@@ -27,6 +27,16 @@ variable "service_accounts" {
         "roles/iam.serviceAccountUser"
       ]
       repository    = "chat-my-doc-llms"
+    },
+    gha_chat_my_doc_app = {
+      account_id    = "chat-my-doc-app"
+      display_name  = "GitHub Actions for chat-my-doc-app"
+      project_roles = [
+        "roles/run.developer",
+        "roles/artifactregistry.writer",
+        "roles/iam.serviceAccountUser"
+      ]
+      repository    = "chat-my-doc-app"
     }
   }
 }
