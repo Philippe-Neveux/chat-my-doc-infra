@@ -27,13 +27,14 @@ module "iam" {
   depends_on = [module.project_services]
 }
 
-# # Create the VM and its static IP address
-# module "storage" {
-#   source                = "./modules/storage"
-#   location              = var.location
-#   # Ensure APIs are enabled before creating compute resources
-#   depends_on = [module.project_services]
-# }
+# Create the VM and its static IP address
+module "storage" {
+  source     = "./modules/storage"
+  location   = var.location
+
+  # Ensure APIs are enabled before creating compute resources
+  depends_on = [module.project_services]
+}
 
 # Create the Artifact Registry repositories
 module "artifact_registry" {
@@ -47,7 +48,7 @@ module "artifact_registry" {
 module "cloud_run" {
   source     = "./modules/cloud_run"
   project_id = var.project_id
-  region     = var.region
+  location     = var.location
 
   depends_on = [module.project_services]
 }

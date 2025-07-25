@@ -1,8 +1,8 @@
 # Google Cloud Storage bucket
-resource "google_storage_bucket" "main" {
-  name          = "open-data"
-  location      = var.region
-  force_destroy = false
+resource "google_storage_bucket" "open-data" {
+  name          = "rag-open-data"
+  location      = var.location
+  force_destroy = true
 
   uniform_bucket_level_access = true
 

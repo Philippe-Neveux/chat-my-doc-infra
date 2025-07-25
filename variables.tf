@@ -10,12 +10,6 @@ variable "location" {
   default     = "australia-southeast1"
 }
 
-variable "region" {
-  description = "The region to deploy the resources in."
-  type        = string
-  default     = "australia-southeast1"
-}
-
 variable "zone" {
   description = "The zone to deploy the resources in."
   type        = string
