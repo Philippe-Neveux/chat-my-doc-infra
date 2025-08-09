@@ -11,10 +11,10 @@ resource "google_cloud_run_service_iam_binding" "llm-gateway" {
 }
 
 # Allow public access to Cloud Run service
-resource "google_cloud_run_service_iam_binding" "rag-app" {
+resource "google_cloud_run_service_iam_binding" "chat-my-doc-app" {
   location = var.location
   project  = var.project_id
-  service  = "rag-app"
+  service  = "chat-my-doc-app"
   role     = "roles/run.invoker"
 
   members = [
