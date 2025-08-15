@@ -52,3 +52,13 @@ module "cloud_run" {
 
   depends_on = [module.project_services]
 }
+
+# Create GPU-enabled Compute Engine instances
+module "compute_engine" {
+  source                = "./modules/compute_engine"
+  zone                  = var.zone
+  service_account_email = module.iam.compute_service_account_email
+  vm_names              = ["mistral-7b-instruct", "llama-3-7b-instruct"]
+
+  depends_on = [module.project_services, module.iam]
+}

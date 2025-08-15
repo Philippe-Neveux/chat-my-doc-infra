@@ -31,6 +31,15 @@ variable "service_accounts" {
         "roles/iam.serviceAccountUser"
       ]
       repository    = "chat-my-doc-app"
+    },
+    compute_engine = {
+      account_id    = "compute-engine-sa"
+      display_name  = "Compute Engine Service Account"
+      project_roles = [
+        "roles/compute.instanceAdmin.v1",
+        "roles/storage.admin"
+      ]
+      repository    = ""
     }
   }
 }

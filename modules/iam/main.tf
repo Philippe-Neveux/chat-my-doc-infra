@@ -31,18 +31,12 @@ resource "google_service_account_key" "this" {
   service_account_id = each.value.name
 }
 
-locals {
-  sa_repository_map = {
-    for sa_key, sa in var.service_accounts : google_service_account.this[sa_key].name => sa.repository
-  }
-}
-
 # Add the service account key as a secret to the GitHub repository
 resource "github_actions_secret" "gcp_sa_key" {
-  for_each        = google_service_account_key.this
-  repository      = local.sa_repository_map[each.value.service_account_id]
+  for_each        = { for k, v in var.service_accounts : k => v if v.repository != "" }
+  repository      = each.value.repository
   secret_name     = "GCP_SA_KEY"
-  plaintext_value = base64decode(each.value.private_key)
+  plaintext_value = base64decode(google_service_account_key.this[each.key].private_key)
   depends_on = [
     google_service_account_key.this
   ]
@@ -50,7 +44,7 @@ resource "github_actions_secret" "gcp_sa_key" {
 
 # Add the project_id as a secret to the GitHub repositories
 resource "github_actions_secret" "project_id" {
-  for_each        = var.service_accounts
+  for_each        = { for k, v in var.service_accounts : k => v if v.repository != "" }
   repository      = each.value.repository
   secret_name     = "GCP_PROJECT_ID"
   plaintext_value = var.project_id
