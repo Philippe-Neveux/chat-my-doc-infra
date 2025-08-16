@@ -14,3 +14,9 @@ variable "vm_names" {
   type        = list(string)
   default     = ["mistral-7b-instruct", "llama-3-7b-instruct"]
 }
+
+variable "ssh_public_key_path" {
+  description = "Path to SSH public key file for accessing the VMs"
+  type        = string
+  default     = "~/.ssh/gcp_rag_llms.pub"
+}

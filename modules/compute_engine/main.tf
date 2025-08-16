@@ -29,7 +29,8 @@ resource "google_compute_instance" "gpu_vm" {
   }
 
   metadata = {
-    enable-oslogin = "TRUE"
+    enable-oslogin = "FALSE"
+    ssh-keys = "ubuntu:${file(var.ssh_public_key_path)}"
   }
 
   service_account {
