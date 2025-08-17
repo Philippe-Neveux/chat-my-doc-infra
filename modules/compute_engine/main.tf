@@ -38,7 +38,7 @@ resource "google_compute_instance" "gpu_vm" {
     scopes = ["cloud-platform"]
   }
 
-  tags = ["gpu-vm", "allow-ssh"]
+  tags = ["gpu-vm", "allow-ssh", "allow-port-3000"]
 }
 
 resource "google_compute_firewall" "allow_ssh" {
@@ -52,4 +52,18 @@ resource "google_compute_firewall" "allow_ssh" {
 
   source_ranges = ["0.0.0.0/0"]
   target_tags   = ["allow-ssh"]
+}
+
+resource "google_compute_firewall" "allow_port_3000" {
+  name    = "allow-port-3000-gpu-vms"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["3000"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["allow-port-3000"]
+  description   = "Allow port 3000 for mistral and llama instances"
 }
