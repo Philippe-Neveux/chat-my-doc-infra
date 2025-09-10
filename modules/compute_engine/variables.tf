@@ -12,7 +12,7 @@ variable "service_account_email" {
 variable "vm_names" {
   description = "List of VM names"
   type        = list(string)
-  default     = ["mistral-7b-instruct", "llama-3-7b-instruct"]
+  default     = ["mistral-7b-instruct"]
 }
 
 variable "ssh_public_key_path" {

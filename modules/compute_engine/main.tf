@@ -1,10 +1,10 @@
 resource "google_compute_address" "gpu_vm_static_ip" {
-  count = 2
+  count = 1
   name  = "${var.vm_names[count.index]}-static-ip"
 }
 
 resource "google_compute_instance" "gpu_vm" {
-  count        = 2
+  count        = 1
   name         = var.vm_names[count.index]
   machine_type = "n2-highmem-4"
   zone         = var.zone
@@ -12,8 +12,8 @@ resource "google_compute_instance" "gpu_vm" {
   boot_disk {
     initialize_params {
       image = "ubuntu-2204-jammy-v20250805"
-      size  = 100
-      type  = "pd-standard"
+      size  = 200
+      type  = "pd-ssd"
     }
   }
 
@@ -38,7 +38,7 @@ resource "google_compute_instance" "gpu_vm" {
     scopes = ["cloud-platform"]
   }
 
-  tags = ["gpu-vm", "allow-ssh", "allow-port-3000"]
+  tags = ["gpu-vm", "allow-ssh", "allow-port-3000", "huggingface-access"]
 }
 
 resource "google_compute_firewall" "allow_ssh" {
@@ -66,4 +66,20 @@ resource "google_compute_firewall" "allow_port_3000" {
   source_ranges = ["0.0.0.0/0"]
   target_tags   = ["allow-port-3000"]
   description   = "Allow port 3000 for mistral and llama instances"
+}
+
+resource "google_compute_firewall" "allow_huggingface_cdn" {
+  name      = "allow-huggingface-cdn"
+  network   = "default"
+  direction = "EGRESS"
+  priority  = 1000
+
+  allow {
+    protocol = "tcp"
+    ports    = ["443"]
+  }
+
+  destination_ranges = ["0.0.0.0/0"]
+  target_tags        = ["huggingface-access"]
+  description        = "Allow HTTPS egress for HuggingFace CDN access"
 }
